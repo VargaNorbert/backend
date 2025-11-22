@@ -1,10 +1,26 @@
 from fastapi import FastAPI, File, UploadFile, Form
+from fastapi.middleware.cors import CORSMiddleware
 from azure.storage.blob import BlobServiceClient
 import requests
 import os
 import time
 
 app = FastAPI()
+
+origins = [
+    "https://brave-meadow-08df98603.3.azurestaticapps.net",
+]
+
+# ---------------------------
+# CORS – ezt kellett hozzáadni
+# ---------------------------
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.post("/translate")
 async def translate_file(
